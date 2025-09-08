@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 19:07:32 by robello           #+#    #+#             */
-/*   Updated: 2025/09/08 16:27:22 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/08 17:16:22 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,14 +122,15 @@ void	master_shell_loop(t_shell *shell)
 		
 		// Handle SIGINT or NULL input
 		
-		if (!input_line || g_gb.last_sig == SIGINT)
+		if (g_gb.last_sig == SIGINT)
 		{
-			if (input_line)
-				free(input_line);
-			if (!input_line)
-				break ;
-			continue ;
+		    free(input_line);
+		    continue;
 		}
+		
+		// EOF → exit shell
+		if (!input_line)
+		    break;
 		// Process the complete input line
 		ft_manage_inputline(input_line, shell);
 		g_gb.last_status_code = shell->last_status;

@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 12:06:18 by gkamanur          #+#    #+#             */
-/*   Updated: 2025/09/08 16:30:20 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/08 17:44:04 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,17 +167,49 @@ char	*read_input_with_quotes(const char *prompt, const char *second_prompt)
 
 	g_gb.last_sig = 0;
 	line = readline(prompt);
-	if (!line || g_gb.last_sig == SIGINT)
+
+	// Ctrl+D on first prompt → exit shell
+	if (!line)
+		return (NULL);
+
+	// Ctrl+C on first prompt → cancel line, return empty
+	if (g_gb.last_sig == SIGINT)
 	{
-		if (line)
-			free(line);
+		free(line);
 		return (NULL);
 	}
-	while (check_unclosed_quotes(line) && g_gb.last_sig != SIGINT)
+
+	while (check_unclosed_quotes(line))
 	{
-		line = read_secondary_input(line, second_prompt);
-		if (!line)
+		char *next = readline(second_prompt);
+
+		// Ctrl+C inside continuation → cancel whole line
+		if (g_gb.last_sig == SIGINT)
+		{
+			free(line);
+			free(next);
 			return (NULL);
+		}
+
+		// Ctrl+D inside continuation → stop and return partial input
+		if (!next)
+			break;
+
+		// Concatenate
+		char *tmp = ft_strjoin(line, "\n");
+		free(line);
+		if (!tmp)
+		{
+			free(next);
+			return (NULL);
+		}
+		char *joined = ft_strjoin(tmp, next);
+		free(tmp);
+		free(next);
+		if (!joined)
+			return (NULL);
+		line = joined;
 	}
 	return (line);
 }
+

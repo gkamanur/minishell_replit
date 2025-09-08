@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:08:32 by gkamanur          #+#    #+#             */
-/*   Updated: 2025/08/28 15:53:23 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/08 17:35:52 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	ft_heredoc(t_comnd *cmds, t_shell *shell)
 	}
 	if (pipe(pipe_fd) < 0)
 		ft_error_exit("pipe");
-	g_gb.last_sig = SIGINT_HEREDOC;
+	//g_gb.last_sig = SIGINT_HEREDOC;
 	if (ft_heredoc_read_loop(pipe_fd[1], cmds->delimiter, shell) == -1)
 	{
 		close(pipe_fd[1]);
