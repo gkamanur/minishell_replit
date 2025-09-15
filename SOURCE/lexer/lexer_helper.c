@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 14:03:13 by gkamanur          #+#    #+#             */
-/*   Updated: 2025/09/11 13:41:28 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/15 17:06:14 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,7 @@ t_token	*lex_single_quote(const char *input_line, int *input_ptr)
 	value = ft_substr(input_line, start, len);
 	if (!value)
 		return (NULL);
-	token = ft_new_token(TOKEN_WORD, value, 0);
-	token->quote = SINGLE;
+	token = ft_new_token(TOKEN_WORD, value, SINGLE);
 	if (!token)
 		free(value);
 	(*input_ptr)++;
@@ -116,8 +115,8 @@ t_token	*lex_double_quote(const char *input_line, int *input_ptr)
 	value = ft_substr(input_line, start, len);
 	if (!value)
 		return (NULL);
-	token = ft_new_token(TOKEN_WORD, value, 0);
-	token->quote = DOUBLE;
+	token = ft_new_token(TOKEN_WORD, value, DOUBLE);
+	
 	if (!token)
 		free(value);
 	(*input_ptr)++;

@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 13:38:07 by robello           #+#    #+#             */
-/*   Updated: 2025/09/11 14:46:38 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/15 13:00:44 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,17 +65,34 @@ typedef struct s_array_var
 	struct s_array_var			*next_array;
 }								t_array_var;
 
-typedef enum e_token
+// typedef enum e_token
+// {
+// 	TOKEN_WORD,
+// 	TOKEN_PIPE,
+// 	TOKEN_REDIRECT_IN,
+// 	TOKEN_REDIRECT_OUT,
+// 	TOKEN_HEREDOC,
+// 	TOKEN_APPEND,
+// 	TOKEN_COMMAND,
+// 	TOKEN_EOF,
+// }								t_token_type;
+typedef enum e_token_type
 {
 	TOKEN_WORD,
 	TOKEN_PIPE,
 	TOKEN_REDIRECT_IN,
 	TOKEN_REDIRECT_OUT,
-	TOKEN_HEREDOC,
 	TOKEN_APPEND,
-	TOKEN_COMMAND,
+	TOKEN_HEREDOC,
+	TOKEN_AND,
+	TOKEN_OR,
+	TOKEN_SEMICOLON,
+	TOKEN_LPAREN,
+	TOKEN_RPAREN,
+	TOKEN_AMPERSAND,
 	TOKEN_EOF,
-}								t_token_type;
+	TOKEN_NEWLINE
+}	t_token_type;
 
 typedef enum e_quote
 {
@@ -191,7 +208,7 @@ t_token							*lex_word(const char *input_line,
 									int *input_ptr);
 t_token							*get_next_token(const char *input_line,
 									int *input_ptr);
-t_token							*ft_lexer_main(const char *input_line);
+t_token							*ft_lexer_main(char *input_line);
 
 // parser
 

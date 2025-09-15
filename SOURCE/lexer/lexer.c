@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 19:07:52 by robello           #+#    #+#             */
-/*   Updated: 2025/09/15 12:15:15 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/15 13:16:11 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ static char	*concat_token_values(const char *val1, const char *val2)
 	return (result);
 }
 
-t_token	*ft_lexer_main(const char *input_line)
+t_token	*ft_lexer_main(char *input_line)
 {
 	int		input_ptr;
 	t_token	*first;
@@ -155,8 +155,8 @@ t_token	*ft_lexer_main(const char *input_line)
 	t_token	*token;
 	int		had_space;
 	char	*new_value;
-	int		prev_quote;
-	int		curr_quote;
+	// int		prev_quote;
+	// int		curr_quote;
 
 	input_ptr = 0;
 	first = NULL;
@@ -175,7 +175,7 @@ t_token	*ft_lexer_main(const char *input_line)
 
 		// Check if we can concatenate with previous token
 		if (!had_space && last && last->type == TOKEN_WORD
-			&& token->type == TOKEN_WORD)
+			&& token->type == TOKEN_WORD ) //&& last->quote == token->quote)
 		{
 			// Concatenate with previous token
 			new_value = concat_token_values(last->token_value,
@@ -183,16 +183,20 @@ t_token	*ft_lexer_main(const char *input_line)
 			if (!new_value)
 			{
 				free_tokens(first);
+				free(token->token_value);//added
+				free(token); //added
 				return (NULL);
 			}
-			prev_quote = last->quote;
-			curr_quote = token->quote;
-			if (prev_quote == DOUBLE || curr_quote == DOUBLE)
-				last->quote = DOUBLE;
-			else if (prev_quote == SINGLE || curr_quote == SINGLE)
+			if (last->quote == SINGLE || token->quote == SINGLE)
 				last->quote = SINGLE;
+			else if (last->quote == DOUBLE || token->quote == DOUBLE)
+				last->quote = DOUBLE;
+			else
+				last->quote = NA;
+
 			free(last->token_value);
 			last->token_value = new_value;
+			
 			// Free the current token since we merged it
 			free(token->token_value);
 			free(token);
