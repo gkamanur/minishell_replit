@@ -15,17 +15,17 @@ BONUS_NAME = minishell_bonus
 
 CC = cc -g -O0
 
-LIBFT_DIR       	:= SOURCE/libft
-GET_NEXT_LINE_DIR 	:= SOURCE/gnl
-BUILT_DIR 			:= SOURCE/built
-EXEC_DIR      		:= SOURCE/execute
-EXPAN_DIR   		:= SOURCE/expansion
-LEXER_DIR 			:= SOURCE/lexer
-PIPE_DIR     		:= SOURCE/pipe
-PARSE_DIR     		:= SOURCE/parser
-MAIN_DIR     		:= SOURCE/main
+LIBFT_DIR               := SOURCE/libft
+GET_NEXT_LINE_DIR       := SOURCE/gnl
+BUILT_DIR                       := SOURCE/built
+EXEC_DIR                := SOURCE/execute
+EXPAN_DIR               := SOURCE/expansion
+LEXER_DIR                       := SOURCE/lexer
+PIPE_DIR                := SOURCE/pipe
+PARSE_DIR               := SOURCE/parser
+MAIN_DIR                := SOURCE/main
 
-CFLAGS = -Wall -Wextra -Werror -I$(LIBFT_DIR) -I$(GET_NEXT_LINE_DIR)
+CFLAGS = -Wall -Wextra -Werror -I$(LIBFT_DIR) -I$(GET_NEXT_LINE_DIR) -ISOURCE/include $(NIX_CFLAGS_COMPILE)
 
 SRC_DIR = src
 BONUS_SRC_DIR = src_bonus
@@ -44,7 +44,7 @@ RESET = \033[0m
 all: $(NAME)
 
 $(NAME): $(OBJ) | $(LIBFT)
-	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -lreadline -o $@
+	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(NIX_LDFLAGS) -lreadline -o $@
 	@printf "$(GREEN)***** MINISHELL PROGRAM CREATED SUCCESSFULLY *****$(RESET)\n"
 
 $(BONUS_NAME): $(BONUS_OBJ) | $(LIBFT)

@@ -1,0 +1,30 @@
+modules = ["c-clang14"]
+[agent]
+expertMode = true
+
+[nix]
+channel = "stable-25_05"
+packages = ["readline"]
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Minishell"
+
+[[workflows.workflow]]
+name = "Minishell"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "./minishell"
+
+[workflows.workflow.metadata]
+outputType = "console"
