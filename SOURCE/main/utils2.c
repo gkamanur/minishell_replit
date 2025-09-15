@@ -50,6 +50,7 @@ t_token *ft_new_token(t_token_type type, char *value, int quote)
         token->quote = quote;
         token->type = type;
         token->token_value = value;
+        token->join_with_next = 0;
         token->next_token = NULL;
         return (token);
 }

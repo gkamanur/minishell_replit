@@ -108,6 +108,7 @@ typedef struct s_token
         t_token_type                            type;
         t_quote                                         quote;
         char                                            *token_value;
+        int                                                     join_with_next;
         struct s_token                          *next_token;
 }                                                               t_token;
 

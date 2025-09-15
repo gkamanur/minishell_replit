@@ -30,6 +30,11 @@ This is a C project implementing a minimal shell (minishell) that mimics bash fu
 - Updated Makefile linking to include Nix library paths: `$(NIX_LDFLAGS)`
 - Fixed Makefile tab/space indentation issues using AWK script
 - Configured "Minishell" console workflow for interactive shell usage
+- **FIXED VARIABLE EXPANSION**: Implemented token boundary tracking system to properly handle mixed quoted/unquoted variable expansion
+  - Added `join_with_next` flag to token structure to track adjacency during lexing
+  - Modified expansion logic to concatenate token groups instead of 1:1 token-to-argument mapping
+  - Fixed parser `dup_token` function to preserve boundary flags
+  - Now correctly handles cases like `'$HOME'$USER` → `$HOMErunner` (bash-compatible)
 
 ## Usage Instructions
 - **Run minishell**: Use the "Minishell" workflow in the console panel
