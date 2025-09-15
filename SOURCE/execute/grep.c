@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 15:52:43 by gkamanur          #+#    #+#             */
-/*   Updated: 2025/09/02 16:30:37 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/15 10:40:42 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,17 +69,17 @@ void	execve_grep_handler(const char *fullpath, t_comnd *current, char **envp)
 	if (is_grep(fullpath) && current->av_cmd && current->av_cmd[1])
 	{
 		joined = join_args(&current->av_cmd[1], "");
-        printf("Joined args for grep: [%s]\n", joined); // Debugging line
+        //printf("Joined args for grep: [%s]\n", joined); // Debugging line
 		if (!joined)
 		{
-			perror("minishell: memory allocation failed");
+			ft_putstr_fd("minishell: memory allocation failed", 2);
 			exit(EXIT_FAILURE);
 		}
 		new_argv[0] = ft_strdup(current->av_cmd[0]);
 		if (!new_argv[0])
 		{
 			free(joined);
-			perror("minishell: memory allocation failed");
+			ft_putstr_fd("minishell: memory allocation failed", 2);
 			exit(EXIT_FAILURE);
 		}
 		new_argv[1] = joined;
@@ -92,6 +92,6 @@ void	execve_grep_handler(const char *fullpath, t_comnd *current, char **envp)
     {
         execve(fullpath, current->av_cmd, envp);
     }
-	perror("minishell: execve failed");
+	ft_putstr_fd("minishell: execve failed", 2);
 	exit(EXIT_FAILURE);
 }

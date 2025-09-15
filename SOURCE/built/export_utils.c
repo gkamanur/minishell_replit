@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 11:23:39 by gkamanur          #+#    #+#             */
-/*   Updated: 2025/08/28 11:43:51 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/15 10:37:50 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,15 @@ void	print_export_list(t_env_var *env_list)
 	{
 		if (env_list->envar_name)
 		{
-			printf("declare -x %s", env_list->envar_name);
+			ft_putstr_fd("declare -x ", 1);
+			ft_putstr_fd(env_list->envar_name, 1);
 			if (env_list->envar_value)
-				printf("=\"%s\"", env_list->envar_value);
-			printf("\n");
+			{
+				ft_putstr_fd("=\"", 1);
+				ft_putstr_fd(env_list->envar_value, 1);
+				ft_putchar_fd('"', 1);
+			}
+			ft_putchar_fd('\n', 1);
 		}
 		env_list = env_list->next_envar;
 	}

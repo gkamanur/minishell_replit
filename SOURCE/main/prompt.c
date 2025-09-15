@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 14:54:55 by gkamanur          #+#    #+#             */
-/*   Updated: 2025/08/27 12:05:08 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/15 10:50:24 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char	*ft_prompt_path(char *user_host, const char *cwd)
 	free(prompt_path);
 	if (!tmp)
 		return (NULL);
-	joined = ft_strjoin(tmp, COLOR_RESET PROMPT);
+	joined = ft_strjoin(tmp, COLOR_RESET PROMPT RESET);
 	free(tmp);
 	return (joined);
 }

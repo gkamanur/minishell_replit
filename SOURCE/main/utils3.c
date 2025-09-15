@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 12:06:18 by gkamanur          #+#    #+#             */
-/*   Updated: 2025/09/11 14:46:47 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/15 11:06:02 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,24 @@ char	*read_secondary_input(char *line, const char *second_prompt)
 	free(next);
 	return (joined);
 }
+static char* read_line_from_stdin(void) {
+    char buffer[BUFFER_SIZE];
+    int idx = 0;
+    char c;
+    ssize_t n;
+
+    // Read one character at a time up to BUFFER_SIZE-1 (leave space for null)
+    while (idx < BUFFER_SIZE - 1) {
+        n = read(STDIN_FILENO, &c, 1);
+        if (n <= 0) break; // EOF or error
+        buffer[idx++] = c;
+        if (c == '\n') break; // Stop at newline
+    }
+    if (idx == 0) return NULL; // Nothing was read
+
+    buffer[idx] = '\0'; // Null terminate (guaranteed room)
+    return ft_strdup(buffer);
+}
 
 char	*read_input_with_quotes(const char *prompt, const char *second_prompt)
 {
@@ -175,15 +193,7 @@ char	*read_input_with_quotes(const char *prompt, const char *second_prompt)
 	}
 	else
 	{
-		// Non-interactive mode: read from stdin without prompt
-		char buffer[4096];
-		if (fgets(buffer, sizeof(buffer), stdin) == NULL)
-			return (NULL);
-		// Remove trailing newline
-		size_t len = strlen(buffer);
-		if (len > 0 && buffer[len - 1] == '\n')
-			buffer[len - 1] = '\0';
-		line = ft_strdup(buffer);
+		line = read_line_from_stdin();
 	}
 
 	// Ctrl+D on first prompt → exit shell

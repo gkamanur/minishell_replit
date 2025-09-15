@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:25:09 by gkamanur          #+#    #+#             */
-/*   Updated: 2025/08/28 15:27:47 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/15 10:35:31 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*ft_get_cd(char **av_cmd, t_env_var **env_list)
 		path = get_env_value("OLDPWD", *env_list);
 		if (!path)
 			return (ft_putstr_fd("cd: OLDPWD not set\n", 2), NULL);
-		printf("%s\n", path);
+		ft_putstr_fd(path, 1);
 	}
 	if (ft_cd_arg_has_ws(path))
 		return (NULL);

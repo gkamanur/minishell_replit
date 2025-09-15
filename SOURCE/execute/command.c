@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:55:50 by gkamanur          #+#    #+#             */
-/*   Updated: 2025/09/02 16:35:38 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/15 10:39:16 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,33 +129,33 @@ void	ft_parent_cleanup(int *prev_fd, int pipe_fd[2])
 	}
 }
 
-#ifdef DEBUG
-void	print_commands(t_comnd *cmds)
-{
-	int	i;
-	int	j;
+// #ifdef DEBUG
+// void	print_commands(t_comnd *cmds)
+// {
+// 	int	i;
+// 	int	j;
 
-	i = 0;
-	while (cmds)
-	{
-		printf("Command %d:\n", i);
-		if (cmds->av_cmd)
-		{
-			j = 0;
-			while (cmds->av_cmd[j])
-			{
-				printf("  argv[%d]: %s\n", j, cmds->av_cmd[j]);
-				j++;
-			}
-		}
-		if (cmds->infile_name)
-			printf("  infile: %s\n", cmds->infile_name);
-		if (cmds->outfile_name)
-			printf("  outfile: %s\n", cmds->outfile_name);
-		if (cmds->delimiter)
-			printf("  heredoc delimiter: %s\n", cmds->delimiter);
-		cmds = cmds->next;
-		i++;
-	}
-}
-#endif
+// 	i = 0;
+// 	while (cmds)
+// 	{
+// 		printf("Command %d:\n", i);
+// 		if (cmds->av_cmd)
+// 		{
+// 			j = 0;
+// 			while (cmds->av_cmd[j])
+// 			{
+// 				printf("  argv[%d]: %s\n", j, cmds->av_cmd[j]);
+// 				j++;
+// 			}
+// 		}
+// 		if (cmds->infile_name)
+// 			printf("  infile: %s\n", cmds->infile_name);
+// 		if (cmds->outfile_name)
+// 			printf("  outfile: %s\n", cmds->outfile_name);
+// 		if (cmds->delimiter)
+// 			printf("  heredoc delimiter: %s\n", cmds->delimiter);
+// 		cmds = cmds->next;
+// 		i++;
+// 	}
+// }
+// #endif

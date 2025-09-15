@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:27:38 by gkamanur          #+#    #+#             */
-/*   Updated: 2025/08/20 14:25:11 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/15 10:38:32 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ int	builtin_unset(char **av_cmd, t_env_var **env_list)
 			unset_env_variable(av_cmd[i], env_list);
 		else
 		{
-			printf("unset: `%s': not a valid identifier\n", av_cmd[i]);
+			ft_putstr_fd("unset: `", 1);
+			ft_putstr_fd(av_cmd[i], 1);
+			ft_putstr_fd("': not a valid identifier\n", 1);
 			status = 1;
 		}
 		i++;

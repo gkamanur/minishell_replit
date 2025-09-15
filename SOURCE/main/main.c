@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 19:07:32 by robello           #+#    #+#             */
-/*   Updated: 2025/09/11 14:50:35 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/15 10:42:37 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ void	master_shell_loop(t_shell *shell)
 		{
 			// Only print EOF in interactive mode
 			if (is_interactive)
-				printf(RED"{EOF}\n"RESET);
+				ft_putstr_fd(RED "exit\n" RESET, 1);
 		    break;
 		}
 		// Process the complete input line

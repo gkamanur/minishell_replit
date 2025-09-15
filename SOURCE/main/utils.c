@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 10:45:33 by gkamanur          #+#    #+#             */
-/*   Updated: 2025/09/11 14:20:32 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/15 11:08:35 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ void	ft_free_commands(t_comnd **cmd_list)
 				free(current->av_cmd[i++]);
 			free(current->av_cmd);
 		}
-
                 if (current->av_cmd_lst)
 		        free_tokens(current->av_cmd_lst);
 

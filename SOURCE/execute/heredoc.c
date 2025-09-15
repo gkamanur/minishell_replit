@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:08:32 by gkamanur          #+#    #+#             */
-/*   Updated: 2025/09/10 18:40:25 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/15 10:41:27 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 static int	handle_heredoc_eof(char *line, t_shell *shell, char *delimiter)
 {
 	write(STDOUT_FILENO, "\n", 1);
-	printf("minishell: warning: here-document at line %d "
-		"delimited by end-of-file (wanted `%s')\n",
-		shell->line_cnt, delimiter);
+	ft_putstr_fd("minishell: warning: here-document at line ", STDERR_FILENO);
+	ft_putnbr_fd(shell->line_cnt, STDERR_FILENO);
+	ft_putstr_fd(" delimited by end-of-file (wanted `", STDERR_FILENO);
+	ft_putstr_fd(delimiter, STDERR_FILENO);
+	ft_putstr_fd("')\n", STDERR_FILENO);
 	free(line);
 	return (-1);
 }

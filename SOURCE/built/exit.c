@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:29:12 by gkamanur          #+#    #+#             */
-/*   Updated: 2025/09/02 14:48:55 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/15 10:36:54 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	builtin_exit(char **av_cmd, t_shell *shell)
 			exit_code = ft_atoi(av_cmd[1]);
 	}
 	else
-		exit_code = shell->last_status; //
-	//printf("exit_code : %li\n", exit_code);
+		exit_code = shell->last_status;
+	ft_putstr_fd(RED "exit\n" RESET, 1);
 	exit(exit_code);
 }
