@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:08:32 by gkamanur          #+#    #+#             */
-/*   Updated: 2025/09/08 17:35:52 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/10 18:40:25 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,9 @@ int	ft_start_execution(t_comnd *cmds, t_shell *shell)
 		ft_putstr_fd("minishell: missing commands\n", 2);
 		return (1);
 	}
+	if (cmd->av_cmd[0] && (strcmp(cmd->av_cmd[0], "minishell") == 0
+		|| strcmp(cmd->av_cmd[0], "./minishell") == 0))
+    	return (handle_nested_minishell(cmd->av_cmd, shell->envp));
 	while (cmd)
 	{
 		if (cmd->delimiter)

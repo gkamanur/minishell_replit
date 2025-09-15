@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 14:03:13 by gkamanur          #+#    #+#             */
-/*   Updated: 2025/08/25 14:44:05 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/11 13:41:28 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_token	*lex_double_redirect(const char *input_line, int *input_ptr)
 		value = ft_strdup(">>");
 	if (!value)
 		return (NULL);
-	token = ft_new_token(type, value);
+	token = ft_new_token(type, value, 0);
 	if (!token)
 		free(value);
 	return (token);
@@ -53,7 +53,7 @@ t_token	*lex_redirect(const char *input_line, int *input_ptr)
 	if (!value)
 		return (NULL);
 	(*input_ptr)++;
-	token = ft_new_token(type, value);
+	token = ft_new_token(type, value, 0);
 	if (!token)
 		free(value);
 	return (token);
@@ -79,7 +79,7 @@ t_token	*lex_single_quote(const char *input_line, int *input_ptr)
 	value = ft_substr(input_line, start, len);
 	if (!value)
 		return (NULL);
-	token = ft_new_token(TOKEN_WORD, value);
+	token = ft_new_token(TOKEN_WORD, value, 0);
 	token->quote = SINGLE;
 	if (!token)
 		free(value);
@@ -97,7 +97,16 @@ t_token	*lex_double_quote(const char *input_line, int *input_ptr)
 	start = *input_ptr + 1;
 	(*input_ptr)++;
 	while (input_line[*input_ptr] && input_line[*input_ptr] != '"')
-		(*input_ptr)++;
+	{
+		// Handle escape sequences in double quotes
+		if (input_line[*input_ptr] == '\\' && input_line[*input_ptr + 1])
+		{
+			// Skip the escape character and the next character
+			(*input_ptr) += 2;
+		}
+		else
+			(*input_ptr)++;
+	}
 	if (!input_line[*input_ptr])
 	{
 		ft_putstr_fd("minishell: syntax error: unclosed quote\n", 2);
@@ -107,7 +116,7 @@ t_token	*lex_double_quote(const char *input_line, int *input_ptr)
 	value = ft_substr(input_line, start, len);
 	if (!value)
 		return (NULL);
-	token = ft_new_token(TOKEN_WORD, value);
+	token = ft_new_token(TOKEN_WORD, value, 0);
 	token->quote = DOUBLE;
 	if (!token)
 		free(value);
@@ -132,7 +141,7 @@ t_token	*lex_metacharacter(const char *input_line, int *input_ptr)
 		chara[0] = input_line[*input_ptr];
 		chara[1] = '\0';
 		(*input_ptr)++;
-		token = ft_new_token(TOKEN_PIPE, ft_strdup(chara));
+		token = ft_new_token(TOKEN_PIPE, ft_strdup(chara), 0);
 		if (!token)
 			return (NULL);
 		return (token);
@@ -142,7 +151,7 @@ t_token	*lex_metacharacter(const char *input_line, int *input_ptr)
 		chara[0] = input_line[*input_ptr];
 		chara[1] = '\0';
 		(*input_ptr)++;
-		token = ft_new_token(TOKEN_WORD, ft_strdup(chara));
+		token = ft_new_token(TOKEN_WORD, ft_strdup(chara), 0);
 		if (!token)
 			return (NULL);
 		return (token);

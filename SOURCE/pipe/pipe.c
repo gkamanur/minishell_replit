@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 11:53:50 by robello           #+#    #+#             */
-/*   Updated: 2025/09/02 16:34:48 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/11 14:33:46 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static void	execute_pipeline_loop(t_comnd *cmds, t_shell *shell, pid_t *pids,
 
 
 
+#ifdef DEBUG
 void    print_command(const t_comnd *cmd)
 {
     int i;
@@ -92,15 +93,19 @@ void    print_command(const t_comnd *cmd)
 }
 void print_command_list(const t_comnd *cmd)
 {
-    int i = 0;
+    int i = 1;
     while (cmd)
     {
         printf("\n--- Command #%d ---\n", i);
-        print_command(cmd);
-        cmd = cmd->next;
+        print_command(cmd);              // show argv / redirs
+        print_tokens(cmd->av_cmd_lst);   // show token list
+
+        cmd = cmd->next;  // ✅ advance to next command
         i++;
     }
 }
+#endif
+
 void	ft_pipe_up_bonus(t_comnd *cmds, t_shell *shell)
 {
 	pid_t	*pids;

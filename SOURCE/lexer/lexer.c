@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 19:07:52 by robello           #+#    #+#             */
-/*   Updated: 2025/08/28 13:10:42 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/11 13:41:36 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,20 @@ t_token	*lex_word(const char *input_line, int *input_ptr)
 	}
 	else
 	{
-		// Normal word parsing
-		while (ft_is_word_char(input_line[*input_ptr]))
-			(*input_ptr)++;
+		// Normal word parsing with backslash escape handling
+		while (ft_is_word_char(input_line[*input_ptr]) || input_line[*input_ptr] == '\\')
+		{
+			if (input_line[*input_ptr] == '\\' && input_line[*input_ptr + 1])
+				(*input_ptr) += 2; // Skip escaped character
+			else
+				(*input_ptr)++;
+		}
 	}
 	
 	value = ft_substr(input_line, start, *input_ptr - start);
 	if (!value)
 		return (NULL);
-	token = ft_new_token(TOKEN_WORD, value);
+	token = ft_new_token(TOKEN_WORD, value, 0);
 	if (!token)
 		free(value);
 	return (token);
@@ -96,12 +101,57 @@ t_token	*get_next_token(const char *input_line, int *input_ptr)
 	return (lex_word(input_line, input_ptr));
 }
 
+// Helper function to get next token without skipping initial spaces
+static t_token	*get_next_token_preserve_space(const char *input_line, int *input_ptr, int *had_space)
+{
+	char	x;
+	
+	*had_space = 0;
+	while (ft_is_space(input_line[*input_ptr]))
+	{
+		*had_space = 1;
+		(*input_ptr)++;
+	}
+	if (input_line[*input_ptr] == '\0')
+		return (NULL);
+	x = input_line[*input_ptr];
+	if (ft_is_single_quote(x))
+		return (lex_single_quote(input_line, input_ptr));
+	if (ft_is_double_quote(x))
+		return (lex_double_quote(input_line, input_ptr));
+	if (ft_is_metacharacter(x))
+		return (lex_metacharacter(input_line, input_ptr));
+	return (lex_word(input_line, input_ptr));
+}
+
+// Helper function to concatenate two token values
+static char *concat_token_values(const char *val1, const char *val2)
+{
+	char *result;
+	size_t len1, len2;
+	
+	if (!val1) val1 = "";
+	if (!val2) val2 = "";
+	
+	len1 = ft_strlen(val1);
+	len2 = ft_strlen(val2);
+	result = malloc(len1 + len2 + 1);
+	if (!result)
+		return (NULL);
+	
+	ft_strlcpy(result, val1, len1 + 1);
+	ft_strlcat(result, val2, len1 + len2 + 1);
+	return (result);
+}
+
 t_token	*ft_lexer_main(const char *input_line)
 {
 	int		input_ptr;
 	t_token	*first;
 	t_token	*last;
 	t_token	*token;
+	int		had_space;
+	char	*new_value;
 	
 	input_ptr = 0;
 	first = NULL;
@@ -112,17 +162,38 @@ t_token	*ft_lexer_main(const char *input_line)
 
 	while (input_line[input_ptr])
 	{
-		token = get_next_token(input_line, &input_ptr);
+		token = get_next_token_preserve_space(input_line, &input_ptr, &had_space);
 		if (!token)
 		{
 			free_tokens(first);
 			return (NULL);
 		}
-		if (!first)
-			first = token;
+		
+		// Check if we can concatenate with previous token
+		if (!had_space && last && last->type == TOKEN_WORD && token->type == TOKEN_WORD)
+		{
+			// Concatenate with previous token
+			new_value = concat_token_values(last->token_value, token->token_value);
+			if (!new_value)
+			{
+				free_tokens(first);
+				return (NULL);
+			}
+			free(last->token_value);
+			last->token_value = new_value;
+			// Free the current token since we merged it
+			free(token->token_value);
+			free(token);
+		}
 		else
-			last->next_token = token;
-		last = token;
+		{
+			// Add as new token
+			if (!first)
+				first = token;
+			else
+				last->next_token = token;
+			last = token;
+		}
 	}
 	return (first);
 }

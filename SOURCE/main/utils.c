@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 10:45:33 by gkamanur          #+#    #+#             */
-/*   Updated: 2025/08/21 11:25:29 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/11 14:20:32 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,16 @@ void	ft_free_commands(t_comnd **cmd_list)
 	t_comnd	*current;
 	int		i;
 
+
 	if (!cmd_list || !*cmd_list)
 		return ;
+
 	current = *cmd_list;
 	while (current)
 	{
 		tmp = current->next;
+
+		// free argv (string array)
 		if (current->av_cmd)
 		{
 			i = 0;
@@ -96,9 +100,16 @@ void	ft_free_commands(t_comnd **cmd_list)
 				free(current->av_cmd[i++]);
 			free(current->av_cmd);
 		}
+
+                if (current->av_cmd_lst)
+		        free_tokens(current->av_cmd_lst);
+
+		// free redirection names
 		ft_free_command_redirn_fds(current);
+
 		free(current);
 		current = tmp;
 	}
 	*cmd_list = NULL;
 }
+

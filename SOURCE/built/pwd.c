@@ -20,7 +20,8 @@ int	builtin_pwd(char **av_cmd, t_env_var **env_list)
 	(void)env_list;
 	if (getcwd(current_wdir, sizeof(current_wdir)) != NULL)
 	{
-		printf("%s\n", current_wdir);
+		ft_putstr_fd(current_wdir, 1);
+		ft_putchar_fd('\n', 1);
 		return (0);
 	}
 	perror("pwd");

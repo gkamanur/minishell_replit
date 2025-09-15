@@ -25,7 +25,12 @@ int	builtin_env(char **av_cmd, t_env_var **env_list)
 	while (current)
 	{
 		if (current->envar_name && current->envar_value)
-			printf("%s=%s\n", current->envar_name, current->envar_value);
+		{
+			ft_putstr_fd(current->envar_name, 1);
+			ft_putchar_fd('=', 1);
+			ft_putstr_fd(current->envar_value, 1);
+			ft_putchar_fd('\n', 1);
+		}
 		current = current->next_envar;
 	}
 	return (0);

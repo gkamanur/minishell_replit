@@ -129,6 +129,7 @@ void	ft_parent_cleanup(int *prev_fd, int pipe_fd[2])
 	}
 }
 
+#ifdef DEBUG
 void	print_commands(t_comnd *cmds)
 {
 	int	i;
@@ -157,3 +158,4 @@ void	print_commands(t_comnd *cmds)
 		i++;
 	}
 }
+#endif

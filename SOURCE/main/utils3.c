@@ -6,7 +6,7 @@
 /*   By: gkamanur <gkamanur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 12:06:18 by gkamanur          #+#    #+#             */
-/*   Updated: 2025/09/08 17:44:04 by gkamanur         ###   ########.fr       */
+/*   Updated: 2025/09/11 14:46:47 by gkamanur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,25 @@ char	*read_input_with_quotes(const char *prompt, const char *second_prompt)
 	char	*line;
 
 	g_gb.last_sig = 0;
-	line = readline(prompt);
+	
+	// Check if we're in interactive mode
+	if (isatty(STDIN_FILENO) && prompt)
+	{
+		// Interactive mode: use readline with prompt
+		line = readline(prompt);
+	}
+	else
+	{
+		// Non-interactive mode: read from stdin without prompt
+		char buffer[4096];
+		if (fgets(buffer, sizeof(buffer), stdin) == NULL)
+			return (NULL);
+		// Remove trailing newline
+		size_t len = strlen(buffer);
+		if (len > 0 && buffer[len - 1] == '\n')
+			buffer[len - 1] = '\0';
+		line = ft_strdup(buffer);
+	}
 
 	// Ctrl+D on first prompt → exit shell
 	if (!line)
@@ -179,36 +197,40 @@ char	*read_input_with_quotes(const char *prompt, const char *second_prompt)
 		return (NULL);
 	}
 
-	while (check_unclosed_quotes(line))
+	// Only handle quote continuation in interactive mode
+	if (isatty(STDIN_FILENO) && prompt)
 	{
-		char *next = readline(second_prompt);
-
-		// Ctrl+C inside continuation → cancel whole line
-		if (g_gb.last_sig == SIGINT)
+		while (check_unclosed_quotes(line))
 		{
+			char *next = readline(second_prompt);
+
+			// Ctrl+C inside continuation → cancel whole line
+			if (g_gb.last_sig == SIGINT)
+			{
+				free(line);
+				free(next);
+				return (NULL);
+			}
+
+			// Ctrl+D inside continuation → stop and return partial input
+			if (!next)
+				break;
+
+			// Concatenate
+			char *tmp = ft_strjoin(line, "\n");
 			free(line);
+			if (!tmp)
+			{
+				free(next);
+				return (NULL);
+			}
+			char *joined = ft_strjoin(tmp, next);
+			free(tmp);
 			free(next);
-			return (NULL);
+			if (!joined)
+				return (NULL);
+			line = joined;
 		}
-
-		// Ctrl+D inside continuation → stop and return partial input
-		if (!next)
-			break;
-
-		// Concatenate
-		char *tmp = ft_strjoin(line, "\n");
-		free(line);
-		if (!tmp)
-		{
-			free(next);
-			return (NULL);
-		}
-		char *joined = ft_strjoin(tmp, next);
-		free(tmp);
-		free(next);
-		if (!joined)
-			return (NULL);
-		line = joined;
 	}
 	return (line);
 }
